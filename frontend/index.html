@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Exposure Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ===================== CONSOLE (left) ===================== -->
+  <aside class="console">
+    <div class="console__brand">
+      <span class="console__eyebrow">OSINT / CASE INTAKE</span>
+      <h1 class="console__title">Employee<br>Exposure<br>Analyzer</h1>
+      <p class="console__tagline">Aggregates publicly available digital-footprint signals and scores social-engineering &amp; leakage exposure.</p>
+    </div>
+
+    <form id="scan-form" class="console__form">
+      <label class="field">
+        <span class="field__label">Subject full name</span>
+        <input type="text" id="full_name" placeholder="e.g. Jane Doe" required autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span class="field__label">Organization</span>
+        <input type="text" id="organization" placeholder="e.g. Acme Corp" required autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span class="field__label">GitHub username <em>(optional)</em></span>
+        <input type="text" id="github_username" placeholder="leave blank to auto-search" autocomplete="off">
+      </label>
+
+      <label class="field field--check">
+        <input type="checkbox" id="authorized" required>
+        <span>I confirm this is an <strong>authorized</strong> assessment (self-audit, internal security review, or employee-consented lookup).</span>
+      </label>
+
+      <button type="submit" id="run-btn" class="btn-run">Run OSINT Scan</button>
+      <p id="form-error" class="form-error" hidden></p>
+    </form>
+
+    <div class="console__scope">
+      <span class="console__eyebrow">ETHICAL SCOPE</span>
+      <ul>
+        <li>Public sources only \u2014 no logins, no data brokers, no breach dumps.</li>
+        <li>No contact is made with the subject.</li>
+        <li>Findings support awareness &amp; hardening, not targeting.</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- ===================== CASE FILE (right) ===================== -->
+  <main class="casefile" id="casefile">
+
+    <div class="casefile__empty" id="empty-state">
+      <div class="empty-mark">\u2014</div>
+      <p>No case open.</p>
+      <p class="empty-sub">Fill in the intake form and run a scan to generate an exposure report.</p>
+    </div>
+
+    <div class="casefile__loading" id="loading-state" hidden>
+      <div class="spinner"></div>
+      <p id="loading-text">Querying public sources\u2026</p>
+    </div>
+
+    <article class="report" id="report" hidden>
+
+      <header class="report__head">
+        <div>
+          <span class="report__eyebrow">CASE FILE <span id="report-id"></span></span>
+          <h2 id="report-subject-name" class="report__title"></h2>
+          <p id="report-subject-org" class="report__org"></p>
+          <p class="report__meta">Generated <span id="report-time"></span> \u2022 <span id="report-duration"></span></p>
+        </div>
+        <div class="stamp" id="risk-stamp">
+          <span id="stamp-band">LOW</span>
+          <span id="stamp-score" class="stamp__score">0/100</span>
+        </div>
+      </header>
+
+      <section class="report__section">
+        <h3 class="report__section-title">Findings</h3>
+        <table class="findings-table">
+          <thead>
+            <tr><th>Category</th><th>Finding</th><th>Risk</th><th>Evidence</th></tr>
+          </thead>
+          <tbody id="findings-body"></tbody>
+        </table>
+      </section>
+
+      <section class="report__section">
+        <h3 class="report__section-title">Recommendations</h3>
+        <div class="rec-columns">
+          <div class="rec-col">
+            <h4>Reduce Social-Engineering Risk</h4>
+            <ul id="rec-social"></ul>
+          </div>
+          <div class="rec-col">
+            <h4>Reduce Information Leakage</h4>
+            <ul id="rec-leak"></ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="report__footer">
+        <button id="download-md" class="btn-secondary">Download report (.md)</button>
+        <button id="new-scan" class="btn-secondary">New scan</button>
+      </footer>
+    </article>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
