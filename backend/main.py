@@ -22,8 +22,8 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+# from fastapi.staticfiles import StaticFiles
+# from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from collectors import (
@@ -143,6 +143,5 @@ def get_report_markdown(report_id: str):
 
     return {"markdown": "\n".join(lines)}
 
-
-# --- Serve the static frontend dashboard ---------------------------------
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
+# # --- Serve the static frontend dashboard ---------------------------------
+# app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
