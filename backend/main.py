@@ -18,12 +18,13 @@ from __future__ import annotations
 
 import time
 import uuid
+from pathlib import Path
 from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-# from fastapi.staticfiles import StaticFiles
-# from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from collectors import (
@@ -143,5 +144,10 @@ def get_report_markdown(report_id: str):
 
     return {"markdown": "\n".join(lines)}
 
-# # --- Serve the static frontend dashboard ---------------------------------
-# app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
+
+# --- Serve the static frontend dashboard ---------------------------------
+# Resolved relative to this file (not the process's working directory) so it
+# works the same whether started locally, in Docker, or by a host like
+# Render/Railway that may launch uvicorn from a different cwd.
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
