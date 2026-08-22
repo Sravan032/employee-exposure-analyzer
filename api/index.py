@@ -1,9 +1,10 @@
-import sys
-from pathlib import Path
+from fastapi import FastAPI
 
-ROOT = Path(__file__).resolve().parent.parent
-BACKEND = ROOT / "backend"
+app = FastAPI()
 
-sys.path.insert(0, str(BACKEND))
-
-from main import app
+@app.get("/api/health")
+def health():
+    return {
+        "status": "ok",
+        "message": "FastAPI is working on Vercel"
+    }
